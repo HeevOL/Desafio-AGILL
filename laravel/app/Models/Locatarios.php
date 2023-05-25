@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Locatarios extends Model
 {
     use HasFactory;
+
+    protected $fillable = [ 'nome', 'email', 'telefone' ];
 }

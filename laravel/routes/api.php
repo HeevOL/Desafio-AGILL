@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AlugueisController;
+use App\Http\Controllers\ImoveisController;
 use App\Http\Controllers\LocadoresController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,11 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/teste', function () {
-    return "Teste com sucesso";
-});
-
 Route::post('/locador', [LocadoresController::class, 'store']);
+Route::get('/lista-imoveis', [ImoveisController::class, 'index']);
+Route::get('/lista-imoveis/{id}', [ImoveisController::class, 'show']);
+Route::post('/realizar-locacao', [AlugueisController::class, 'store']);
+Route::put('/cancelar-locacao/{id}', [AlugueisController::class, 'cancelarLocacao']);
+Route::put('/iniciar-estadia/{id}', [AlugueisController::class, 'iniciarEstadia']);
+Route::put('/cancelar-estadia/{id}', [AlugueisController::class, 'cancelarEstadia']);
+Route::get('/historico-locatario/{id}', [AlugueisController::class, 'historicoLocatario']);
+Route::get('/historico-locador/{id}', [AlugueisController::class, 'historicoLocador']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

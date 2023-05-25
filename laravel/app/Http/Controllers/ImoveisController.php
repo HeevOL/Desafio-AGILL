@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Imoveis;
 use Illuminate\Http\Request;
 
 class ImoveisController extends Controller
@@ -11,7 +12,7 @@ class ImoveisController extends Controller
      */
     public function index()
     {
-        //
+        return Imoveis::all();
     }
 
     /**
@@ -27,7 +28,7 @@ class ImoveisController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Imoveis::findOrFail($id);
     }
 
     /**

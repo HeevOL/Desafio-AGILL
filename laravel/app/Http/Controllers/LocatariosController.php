@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Locatarios;
 use Illuminate\Http\Request;
 
 class LocatariosController extends Controller
@@ -19,7 +20,7 @@ class LocatariosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Locatarios::create($request->all());
     }
 
     /**

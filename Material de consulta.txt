@@ -1,3 +1,17 @@
-# php artisan serve -- inicia o servidor de desenvolvimento Laravel.
+# Material consultado:
 
 https://www.youtube.com/playlist?list=PLJPZ7SmO9-qMWPnNrYOiqm9xyYDolwmoJ
+
+https://www.techtarget.com/searchapparchitecture/definition/API-endpoint#:~:text=An%20API%20endpoint%20is%20a,server%20and%20receiving%20a%20response.
+
+https://pt.stackoverflow.com/questions/344738/update-de-uma-única-informação-no-laravel
+
+# Comandos utilizados:
+
+php artisan serve                                           # inicia o servidor de desenvolvimento Laravel.
+
+php artisan make:model Imoveis --migrations                 # Cria um modelo.
+
+php artisan migrate                                         # Migra as tabelas e colunas definidas para o banco de dados.
+
+php artisan make:controller AlugueisController --api        # Cria um controller.
