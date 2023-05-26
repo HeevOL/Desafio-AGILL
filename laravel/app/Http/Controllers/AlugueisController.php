@@ -13,13 +13,33 @@ class AlugueisController extends Controller
      */
     public function historicoLocatario(string $id)
     {
-        return Alugueis::all()->where('id_locatario', $id);
+        try{
+            $aluguel = Alugueis::all()->where('id_locatario', $id);
+            if ($aluguel == '[]') {
+                throw new Exception;
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Locatário não encontrado.'
+            ], 404);
+        }
+        return $aluguel;
     }
 
 
     public function historicoLocador(string $id)
     {
-        return Alugueis::all()->where('id_locador', $id);
+        try{
+            $aluguel = Alugueis::all()->where('id_locador', $id);
+            if ($aluguel == '[]') {
+                throw new Exception;
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Locador não encontrado.'
+            ], 404);
+        }
+        return $aluguel;
     }
 
     /**
@@ -57,7 +77,7 @@ class AlugueisController extends Controller
     {
         try {
             $aluguel = Alugueis::findOrFail($id);
-            if('status' !== 'agendado'){
+            if($aluguel['status'] != 'agendado'){
                 throw new Exception;
             }
 
@@ -67,8 +87,7 @@ class AlugueisController extends Controller
             ], 404);
         }
 
-        $aluguel->where('status', 'agendado')->update(['status' => 'cancelado']);
-        $aluguel = Alugueis::findOrFail($id);
+        $aluguel->update(['status' => 'cancelado']);
 
         return response()->json([
                 'message' => 'Reserva cancelada com sucesso.',
@@ -81,7 +100,7 @@ class AlugueisController extends Controller
     {
         try {
             $aluguel = Alugueis::findOrFail($id);
-            if('status' !== 'agendado'){
+            if($aluguel['status'] != 'agendado'){
                 throw new Exception;
             }
 
@@ -91,8 +110,7 @@ class AlugueisController extends Controller
             ], 404);
         }
 
-        $aluguel->where('status', 'agendado')->update(['status' => 'ativo']);
-        $aluguel = Alugueis::findOrFail($id);
+        $aluguel->update(['status' => 'ativo']);
 
         return response()->json([
                 'message' => 'Estadia iniciada.',
@@ -101,25 +119,24 @@ class AlugueisController extends Controller
     }
 
 
-    public function cancelarEstadia(string $id)
+    public function finalizarEstadia(string $id)
     {
         try {
             $aluguel = Alugueis::findOrFail($id);
-            if('status' !== 'ativo'){
+            if($aluguel['status'] != 'ativo'){
                 throw new Exception;
             }
 
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Erro ao tentar cancelar estadia.'
+                'message' => 'Erro ao tentar finalizar estadia.'
             ], 404);
         }
 
-        $aluguel->where('status', 'ativo')->update(['status' => 'finalizado']);
-        $aluguel = Alugueis::findOrFail($id);
+        $aluguel->update(['status' => 'finalizado']);
 
         return response()->json([
-                'message' => 'Estadia cancelada com sucesso.',
+                'message' => 'Estadia finalizada com sucesso.',
                 'infos' => $aluguel
             ], 201);
     }

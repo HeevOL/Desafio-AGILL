@@ -26,7 +26,7 @@ Route::get('/lista-imoveis/{id}', [ImoveisController::class, 'show']);
 Route::post('/realizar-locacao', [AlugueisController::class, 'store']);
 Route::put('/cancelar-locacao/{id}', [AlugueisController::class, 'cancelarLocacao']);
 Route::put('/iniciar-estadia/{id}', [AlugueisController::class, 'iniciarEstadia']);
-Route::put('/cancelar-estadia/{id}', [AlugueisController::class, 'cancelarEstadia']);
+Route::put('/finalizar-estadia/{id}', [AlugueisController::class, 'finalizarEstadia']);
 Route::get('/historico-locatario/{id}', [AlugueisController::class, 'historicoLocatario']);
 Route::get('/historico-locador/{id}', [AlugueisController::class, 'historicoLocador']);
 

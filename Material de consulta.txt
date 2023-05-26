@@ -24,6 +24,8 @@ https://laravel.com/docs/10.x/redis
 
 https://redis.io/docs/getting-started/installation/install-redis-on-windows/
 
+https://www.take.net/blog/tecnologia/documentar-api/
+
 # Comandos utilizados:
 
 php artisan serve                                           # inicia o servidor de desenvolvimento Laravel.
