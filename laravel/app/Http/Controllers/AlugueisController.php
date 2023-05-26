@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alugueis;
+use Exception;
 use Illuminate\Http\Request;
 
 class AlugueisController extends Controller
@@ -26,7 +27,19 @@ class AlugueisController extends Controller
      */
     public function store(Request $request)
     {
-        return Alugueis::create($request->all());
+        try {
+            $aluguel = Alugueis::create($request->all());
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao cadastrar reserva.'
+            ], 404);
+        }
+
+        return response()->json([
+                'message' => 'Reserva de aluguel cadastrada.',
+                'infos' => $aluguel
+            ], 201);
     }
 
     /**
@@ -40,33 +53,75 @@ class AlugueisController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function cancelarLocacao(Request $request, string $id)
+    public function cancelarLocacao(string $id)
     {
-        $aluguel = Alugueis::findOrFail($id);
+        try {
+            $aluguel = Alugueis::findOrFail($id);
+            if('status' !== 'agendado'){
+                throw new Exception;
+            }
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao tentar cancelar reserva.'
+            ], 404);
+        }
+
         $aluguel->where('status', 'agendado')->update(['status' => 'cancelado']);
         $aluguel = Alugueis::findOrFail($id);
 
-        return $aluguel;
+        return response()->json([
+                'message' => 'Reserva cancelada com sucesso.',
+                'infos' => $aluguel
+            ], 201);
     }
 
 
-    public function iniciarEstadia(Request $request, string $id)
+    public function iniciarEstadia(string $id)
     {
-        $aluguel = Alugueis::findOrFail($id);
+        try {
+            $aluguel = Alugueis::findOrFail($id);
+            if('status' !== 'agendado'){
+                throw new Exception;
+            }
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao tentar iniciar estadia.'
+            ], 404);
+        }
+
         $aluguel->where('status', 'agendado')->update(['status' => 'ativo']);
         $aluguel = Alugueis::findOrFail($id);
 
-        return $aluguel;
+        return response()->json([
+                'message' => 'Estadia iniciada.',
+                'infos' => $aluguel
+            ], 201);
     }
 
 
-    public function cancelarEstadia(Request $request, string $id)
+    public function cancelarEstadia(string $id)
     {
-        $aluguel = Alugueis::findOrFail($id);
+        try {
+            $aluguel = Alugueis::findOrFail($id);
+            if('status' !== 'ativo'){
+                throw new Exception;
+            }
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao tentar cancelar estadia.'
+            ], 404);
+        }
+
         $aluguel->where('status', 'ativo')->update(['status' => 'finalizado']);
         $aluguel = Alugueis::findOrFail($id);
 
-        return $aluguel;
+        return response()->json([
+                'message' => 'Estadia cancelada com sucesso.',
+                'infos' => $aluguel
+            ], 201);
     }
 
     /**

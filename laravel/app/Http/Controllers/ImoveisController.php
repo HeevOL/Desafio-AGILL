@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Imoveis;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ImoveisController extends Controller
 {
@@ -12,7 +14,11 @@ class ImoveisController extends Controller
      */
     public function index()
     {
-        return Imoveis::all();
+        $ttl = 5;
+
+        return Cache::remember('key', $ttl, function () {
+            return Imoveis::all();
+        });
     }
 
     /**
@@ -28,7 +34,18 @@ class ImoveisController extends Controller
      */
     public function show(string $id)
     {
-        return Imoveis::findOrFail($id);
+        $ttl = 10;
+        try {
+            $imovel = Imoveis::findOrFail($id);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Imovel não encontrado.'
+            ], 404);
+        }
+        return Cache::remember('key', $ttl, function () use ($imovel){
+            return $imovel;
+        });
     }
 
     /**
